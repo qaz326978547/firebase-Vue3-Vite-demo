@@ -64,11 +64,10 @@ const getUser = () => {
       console.log('user', user)
       userData.value = {
         uid: user.uid,
-        dispalyName: user.dispalyName,
+        dispalyName: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
       }
-      console.log(userData.value);
       // ...
     }
   });

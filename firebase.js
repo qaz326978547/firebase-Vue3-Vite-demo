@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 
@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 // 初始化 Firebase
-const app = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
 
-
-export const auth = getAuth(app);
+export { firebaseApp, auth }
