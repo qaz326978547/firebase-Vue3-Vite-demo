@@ -23,11 +23,23 @@ const router = createRouter({
     },
     {
       path: "/feed",
-      name: "feed",
+      name: "",
       component: () => import("../views/Feed.vue"),
       meta: {
         requiresAuth: true,
       },
+      children: [
+        {
+          path: "",
+          name: "member",
+          component: () => import("../views/Feed/Member/MemberCenter.vue"),
+        },
+        {
+          path: "/data",
+          name: 'data',
+          component: () => import("../views/Feed/Member/CreateData.vue"),
+        }
+      ]
     },
   ]
 })

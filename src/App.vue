@@ -6,7 +6,7 @@
       <router-link to="/feed"> Feed </router-link> |
       <router-link to="/register"> Register </router-link> |
       <router-link to="/sign-in"> Login </router-link> |
-      <button @click="handleSignOut" v-if="store.isLogIn">Sign out</button>
+      <button @click="store.userSignOut" v-if="store.accessToken">Sign out</button>
     </nav>
   </header>
 
@@ -15,64 +15,41 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import { loginStore } from '@/stores/isLoginStore';
+import { userDataStore } from '@/stores/useUserDataStore';
+import Cookies from 'js-cookie'
+
 const router = useRouter()
 const store = loginStore()
-
-
-
-const auth = getAuth()
-const handleSignOut = () => {
-  signOut(auth).then(() => {
-    // Sign-out successful.
-    store.logOut()
-    router.push('/')
-  }).catch((error) => {
-    // An error happened.
-    console.log(error);
-    console.log('sign out error')
-  });
-
-}
-
-////
-const userData = ref({
-  uid: '',
-  dispalyName: '',
-  email: '',
-  photoURL: '',
-})
-
+const userStore = userDataStore()
+const accessToken = Cookies.get('accessToken');
 
 router.beforeEach(async (to, from, next) => {
 
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
-  if (requiresAuth && !store.isLogIn) {
+  console.log('accessToken', accessToken);
+  console.log('store.accessToken', store.accessToken);
+  if (requiresAuth && !store.isLogIn && !accessToken) {
+    //需要身分驗證 且 未登入
     alert('請先登入')
     next('/sign-in');
   } else {
-    getUser()
+    userStore.getUser()
     next();
+    // 验证accessToken cookie
+    if (accessToken) {
+      // 存在accessToken，将登录状态设置为true
+      store.isLogIn.value = true;
+      next();
+    } else {
+      // 不存在accessToken，需要重新登录
+      store.isLogIn.value = false;
+      next('/sign-in');
+    }
   }
 })
 
-const getUser = () => {
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log('user', user)
-      userData.value = {
-        uid: user.uid,
-        dispalyName: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-      }
-      // ...
-    }
-  });
-
-}
 ///
 
 

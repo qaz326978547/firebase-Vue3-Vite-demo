@@ -1,24 +1,40 @@
-import { database } from './firebase'; // 假設您已在另一個檔案中初始化了 Firebase
 
-const usersRef = database.ref('users');
-const productsRef = database.ref('products');
+import { apiStore } from '@/stores/api.js'
+const { initUsers, initProducts } = apiStore()
 
-const users = [
-  // 使用者資料
+export const users = [
+  {
+    username: 'Rax',
+    password: '123456',
+    email: 'qqqq@gmail.com'
+  },
+  {
+    username: 'Mary',
+    password: '123456',
+    email: 'qqqddddq@gmail.com'
+  }
 ];
 
-const products = [
-  // 產品資料
+export const products = [
+  {
+    title: 'Product 1',
+    price: 100,
+    count: 10,
+    img: 'img/product1.jpg',
+    content: 'Content 1'
+  },
+  {
+    title: 'Product 2',
+    price: 200,
+    count: 20,
+    img: 'img/product2.jpg',
+    content: 'Content 2'
+  }
 ];
 
-// 批量新增使用者資料
-users.forEach(user => {
-  const newUserRef = usersRef.push(user);
-  const newUserId = newUserRef.key;
-});
-
-// 批量新增產品資料
-products.forEach(product => {
-  const newProductRef = productsRef.push(product);
-  const newProductId = newProductRef.key;
-});
+initUsers(users)
+  .then(() => console.log('Users initialized'))
+  .catch((error) => console.error(error));
+initProducts(products)
+  .then(() => console.log('Products initialized'))
+  .catch((error) => console.error(error));
