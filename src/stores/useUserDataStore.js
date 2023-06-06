@@ -1,10 +1,11 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
-
+import axios from 'axios'
 export const userDataStore = defineStore('userDataStore', () => {
   ////
   const userData = ref({
+    isAdmin: false,
     uid: '',
     dispalyName: '',
     email: '',
@@ -17,6 +18,7 @@ export const userDataStore = defineStore('userDataStore', () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         userData.value = {
+          isAdmin: user.email === 'test1234@gmail.com' ? true : false,
           uid: user.uid,
           dispalyName: user.displayName,
           email: user.email,
@@ -34,5 +36,6 @@ export const userDataStore = defineStore('userDataStore', () => {
   return {
     userData,
     getUser,
+    // getAdmin,
   }
 })

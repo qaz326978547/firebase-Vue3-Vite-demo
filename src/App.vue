@@ -27,8 +27,8 @@ const accessToken = Cookies.get('accessToken');
 router.beforeEach(async (to, from, next) => {
 
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
-  console.log('accessToken', accessToken);
-  console.log('store.accessToken', store.accessToken);
+  // console.log('accessToken', accessToken);
+  // console.log('store.accessToken', store.accessToken);
   if (requiresAuth && !store.isLogIn && !accessToken) {
     //需要身分驗證 且 未登入
     alert('請先登入')

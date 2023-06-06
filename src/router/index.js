@@ -38,6 +38,11 @@ const router = createRouter({
           path: "/data",
           name: 'data',
           component: () => import("../views/Feed/Member/CreateData.vue"),
+        },
+        {
+          path: "/data/:id",
+          name: "id",
+          component: () => import("../views/Feed/Member/SingleData.vue"),
         }
       ]
     },

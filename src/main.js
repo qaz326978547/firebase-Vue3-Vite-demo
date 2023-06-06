@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 import { auth, firebaseApp } from '../firebase'
 import Cookies from 'js-cookie'
 import App from './App.vue'
+
 import router from './router'
 
 
